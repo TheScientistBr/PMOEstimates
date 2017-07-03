@@ -5,7 +5,9 @@ vp1 <- rnorm(30,mean = 100,sd = 25)
 vp2 <- rnorm(30,mean = 50,sd = 12)
 vp3 <- rnorm(40,mean = 10,sd = 5)
 vp <- c(vp1,vp2,vp3)
+
 remove(vp1,vp2,vp3)
+
 cr <- vp[1:50] + rnorm(50,mean = 5,sd = 2)
 va <- vp[1:50] + rnorm(50,-3,30)
 
@@ -16,14 +18,14 @@ df <- data.frame(dias = dias, valor = cumsum(vp), class = "vp")
 df <- rbind(df,data.frame(dias = 1:50,valor = cumsum(cr), class = "cr"))
 df <- rbind(df,data.frame(dias = 1:50,valor = cumsum(va), class = "va"))
 
-fit <- lm(vp[1:50]~c(1:50))
+fit <- glm(df$valor[51:100]~I(c(51:100)*c(51:100)))
 
-df <- rbind(df,data.frame(dias = 51:100, valor = predict(fit), class = "VP"))
+df <- rbind(df,data.frame(dias = 51:100, valor = fit$fitted.values, class = "VP"))
 
 ggplot(data = df, aes(x = dias, y = valor, color = class)) + 
         geom_line(data = subset(df, class %in% c("vp", "cr","va", "VP")), 
                   aes(group = class)) +
-        scale_color_manual("Curva S", values = c("vp" = "darkgreen", "cr" = "blue", "va" = "red", "VP" = "green"))
+        scale_color_manual("Curva S", values = c("vp" = "black", "cr" = "blue", "va" = "red", "VP" = "brown"))
 
 
 
