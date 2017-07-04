@@ -1,0 +1,6 @@
+tp;vme;investimento;demanda;prob;retorno
+Construir;46;120;60;200;80
+Construir;36;120;40;90;-30
+Modernizar;46;50;60;120;70
+Modernizar;36;50;40;60;10
+
