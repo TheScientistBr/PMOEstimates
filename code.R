@@ -65,16 +65,39 @@ plot(dias[1:50],va)
 base <- read.csv("base.txt",header = TRUE,sep = ";")
 head(base)
 library(party)
+library(rpart)
+library(rpart.plot)
 fit <- ctree(tp ~ ., data=base)
 plot(fit, main="Conditional Inference Tree for Kyphosis")
 c <- rep("Construir",10)
 m <- data.frame(tp = rep("Modernizar",11), vme = seq(36,46))
 base <- data.frame(tp = c)
 base <- rbind(base,data.frame( tp=m))
-fit <-rpart(tp ~ ., data=base, method="anova")
+
+fit <-rpart(retorno ~ . -tp, data = base)
 printcp(fit) # display the results 
 plotcp(fit) # visualize cross-validation results 
 summary(fit)
 rpart.plot(fit)
 
+########################################
 
+ls <- data.frame(y = gl(3, 50, labels = c("A", "B", "C")),
+                 x1 = rnorm(150) + rep(c(1, 0, 0), c(50, 50, 50)),
+                 x2 = runif(150))
+
+library("partykit")
+ct <- ctree(retorno  ~ vme + investimento + demanda , data = base)
+plot(ct)
+
+
+
+        ############ air quality @@@@@@@@@@@@@@@@
+library(party)
+airq <- subset(airquality, !is.na(Ozone))
+colnames(airq) <- c("decisao","investimento","retorno","demanda","juros","prazo")
+airct <- ctree(decisao ~ ., data = airq, 
+               controls = ctree_control(maxsurrogate = 3))
+plot(airct,terminal_panel = node_barplot)
+
+table(predict(airct),airq$Ozone)
