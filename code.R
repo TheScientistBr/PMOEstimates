@@ -1,16 +1,19 @@
 library("ggplot2")
 require(reshape)
 
+{
 set.seed(1)
-vp1 <- rnorm(30,mean = 100,sd = 25)
-vp2 <- rnorm(30,mean = 50,sd = 12)
-vp3 <- rnorm(40,mean = 10,sd = 5)
-vp <- c(vp1,vp2,vp3)
+vp1 <- rnorm(20,mean = 5,sd = 1)
+vp2 <- rnorm(20,mean = 8,sd = 3)
+vp3 <- rnorm(20,mean = 20,sd = 15)
+vp4 <- rnorm(20,mean = 8,sd = 3)
+vp5 <- rnorm(20,mean = 5,sd = 2)
+vp <- c(vp1,vp2,vp3,vp4,vp5)
 
-remove(vp1,vp2,vp3)
+remove(vp1,vp2,vp3,vp4,vp5)
 
-cra <- vp[1:100] + rnorm(50,mean = 5,sd = 2)
-vaa <- vp[1:100] + rnorm(50,-3,30)
+cra <- vp[1:100] + rnorm(100,mean = 1,sd = 4)
+vaa <- c(vp[1:50] + rnorm(50,-.5,3),vp[51:100] + rnorm(50,.2,2))
 
 cr <- cra[1:50]
 va <- vaa[1:50]
@@ -36,14 +39,14 @@ df <- rbind(df,data.frame(dias = 51:100, valor = cumsum(va)[50]+cumsum(fit3$fitt
 
 ggplot(data = df, aes(x = dias, y = valor, color = GVA)) + 
         geom_line(data = subset(df, GVA %in% c("vp", "cr","va", "VP","CR","VA")), 
-                  aes(group = GVA), size = 0.8) + ylab("Valor (R$)") +
-        facet_grid( ~ tp)
+                  aes(group = GVA), size = 0.8) + ylab("Valor (R$) x1000") +
+        facet_grid( ~ tp) +
         scale_color_manual("GVA", 
                            values = c("vp" = "black", "cr" = "blue", "va" = "red", 
                                       "VP" = "grey", "CR" = "lightblue", "VA" = "magenta"))
 
 
-
+}
 
 
 
